@@ -1,10 +1,10 @@
 import { InjectRedis } from '@nestjs-modules/ioredis';
 import { Injectable } from '@nestjs/common';
 import Redis from 'ioredis';
-import { ITokenCache } from '@token/domain/cache/token.cache.interface';
+import { IUserCache } from '@user/domain/cache/user.cache.interface';
 
 @Injectable()
-export class TokenCache implements ITokenCache {
+export class UserCache implements IUserCache {
   constructor(@InjectRedis() private readonly redis: Redis) {}
   async create(key, value, ttl): Promise<void> {
     await this.redis.set(`auth:${key}`, JSON.stringify(value), 'EX', ttl);

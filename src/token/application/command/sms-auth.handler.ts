@@ -1,8 +1,8 @@
 import { ulid } from 'ulid';
 import { Inject, Injectable, Logger } from '@nestjs/common';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { ITokenCache } from 'src/token/domain/cache/token.cache.interface';
-import { TokenService } from 'src/token/domain/token.service';
+import { ITokenCache } from '@token/domain/cache/token.cache.interface';
+import { TokenService } from '@token/domain/token.service';
 import { SmsAuthCommand } from './sms-auth.command';
 
 @Injectable()

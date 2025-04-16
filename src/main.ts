@@ -1,9 +1,9 @@
 import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
-import { validationPipe } from './pipe/validation.pipe';
-import { SwaggerProvider } from './swagger/swagger.provider';
 import { VersioningType } from '@nestjs/common';
 import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
+import { validationPipe } from '@shared/pipe/validation.pipe';
+import { SwaggerProvider } from '@shared/swagger/swagger.provider';
+import { AppModule } from './app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {

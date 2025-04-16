@@ -1,6 +1,6 @@
 import { OnEvent } from '@nestjs/event-emitter';
 import { Injectable, Logger } from '@nestjs/common';
-import { SmsAuthEvent } from 'src/token/domain/sms-auth.event';
+import { SmsAuthEvent } from '@token/domain/sms-auth.event';
 
 @Injectable()
 export class SmsAuthEventHandler {

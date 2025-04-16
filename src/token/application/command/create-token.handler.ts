@@ -1,9 +1,9 @@
 import { Inject, Injectable, Logger } from '@nestjs/common';
 import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { ITokenCache } from 'src/token/domain/cache/token.cache.interface';
-import { TokenService } from 'src/token/domain/token.service';
+import { ITokenCache } from '@token/domain/cache/token.cache.interface';
+import { TokenService } from '@token/domain/token.service';
+import { Token } from '@token/domain/vo/token.vo';
 import { CreateTokenCommand } from './create-token.command';
-import { Token } from 'src/token/domain/vo/token.vo';
 
 @Injectable()
 @CommandHandler(CreateTokenCommand)

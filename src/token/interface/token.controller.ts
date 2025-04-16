@@ -1,22 +1,18 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-  UseGuards,
-} from '@nestjs/common';
+import { Controller, Post, Body, UseGuards } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
+import {
+  ApiBearerAuth,
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
+import { AuthGuard } from '@nestjs/passport';
+import { PayloadDto } from '@shared/dto/payload.dto';
+import { Payload } from '@shared/decorator/payload.decorator';
 import { SmsAuthDto } from './dto/sms-auth.dto';
 import { CreateTokenDto } from './dto/create-token.dto';
 import { CreateTokenCommand } from '../application/command/create-token.command';
 import { SmsAuthCommand } from '../application/command/sms-auth.command';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { AuthGuard } from '@nestjs/passport';
-import { PayloadDto } from 'src/dto/payload.dto';
-import { Payload } from 'src/decorator/payload.decorator';
 import { RefreshTokenCommand } from '../application/command/refresh-token.command';
 
 @ApiTags('Token')
@@ -28,6 +24,18 @@ export class TokenController {
   ) {}
 
   @Post('/sms')
+  @ApiOperation({
+    summary: 'SMS 인증 요청',
+    description: '휴대폰 번호로 인증 코드를 요청합니다.',
+  })
+  @ApiResponse({
+    status: 201,
+    description: 'SMS 인증 요청 성공',
+  })
+  @ApiResponse({
+    status: 400,
+    description: '잘못된 요청 형식',
+  })
   smsAuth(@Body() dto: SmsAuthDto) {
     return this.commandBus.execute(
       new SmsAuthCommand(dto.countryCode, dto.phoneNumber),
@@ -37,6 +45,18 @@ export class TokenController {
   @Post('/refresh')
   @ApiBearerAuth()
   @UseGuards(AuthGuard('jwt'))
+  @ApiOperation({
+    summary: '토큰 갱신',
+    description: '토큰을 갱신합니다.',
+  })
+  @ApiResponse({
+    status: 201,
+    description: '토큰 갱신 성공',
+  })
+  @ApiResponse({
+    status: 401,
+    description: '토큰 갱신 실패',
+  })
   refresh(@Payload() dto: PayloadDto) {
     return this.commandBus.execute(
       new RefreshTokenCommand(dto.id, dto.type, dto.tokenType),
@@ -44,6 +64,18 @@ export class TokenController {
   }
 
   @Post()
+  @ApiOperation({
+    summary: '토큰 생성',
+    description: '토큰을 생성합니다.',
+  })
+  @ApiResponse({
+    status: 201,
+    description: '토큰 생성 성공',
+  })
+  @ApiResponse({
+    status: 400,
+    description: '잘못된 요청 형식',
+  })
   create(@Body() dto: CreateTokenDto) {
     return this.commandBus.execute(
       new CreateTokenCommand(
@@ -53,20 +85,5 @@ export class TokenController {
         dto.phoneNumber,
       ),
     );
-  }
-
-  @Get()
-  findAll() {
-    return;
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return;
-  }
-  
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return;
   }
 }
