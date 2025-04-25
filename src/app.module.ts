@@ -10,11 +10,14 @@ import { HealthCheckController } from '@shared/health-check/health-check.control
 import { WinstonModule } from '@shared/winston/winston.module';
 import { LoggingModule } from '@shared/interceptor/logging/logging.module';
 import { ExceptionModule } from '@shared/exception/exception.module';
-import { TokenModule } from './token/token.module';
-import { UserModule } from './user/user.module';
-import { DeviceModule } from './device/device.module';
-import { ItemModule } from './item/item.module';
+import { MailerModule } from '@shared/mailer/mailer.module';
+import { MulterModule } from '@shared/multer/multer.module';
+import { TokenModule } from '@token/token.module';
+import { UserModule } from '@user/user.module';
+import { DeviceModule } from '@device/device.module';
+import { ItemModule } from '@item/item.module';
 import { PaymentModule } from '@payment/payment.module';
+
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -33,6 +36,8 @@ import { PaymentModule } from '@payment/payment.module';
     WinstonModule,
     LoggingModule,
     ExceptionModule,
+    MailerModule,
+    MulterModule,
     UserModule,
     TokenModule,
     DeviceModule,
