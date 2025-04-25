@@ -1,14 +1,14 @@
-import { GetUserResultVO } from './get-user.vo';
+import { UserVO } from '@shared/vo/user.vo';
 
 export class GetUsersResultVO {
   constructor(
-    private readonly users: GetUserResultVO[],
+    private readonly users: UserVO[],
     private readonly total: number,
     private readonly page: number,
     private readonly limit: number,
   ) {}
 
-  get getUsers(): GetUserResultVO[] {
+  get getUsers(): UserVO[] {
     return this.users;
   }
 

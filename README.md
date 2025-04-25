@@ -90,7 +90,11 @@ typeorm @nestjs/typeorm
 class-validator class-transformer
 @nestjs/passport passport-jwt
 @nestjs-modules/ioredis ioredis
+@nestjs/axios
 @aws-sdk/client-s3 @aws-sdk/client-sns
 @nestjs/cqrs
 ulid
 winston
+node-forge @types/node-forge
+firebase-admin
+@nestjs/schedule @types/cron

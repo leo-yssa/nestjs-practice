@@ -20,8 +20,10 @@
     "paths": {
       "@shared/*": ["./src/shared/*"],
       "@token/*": ["./src/token/*"],
-      "@user/*": ["./src/user/*"],
-      "@collection/*": ["./src/collection/*"],
+      "@user/*": ["./src/user/*"],  
+      "@item/*": ["./src/item/*"],
+      "@device/*": ["./src/device/*"],
+      "@payment/*": ["./src/payment/*"]
     }
   }
 }

@@ -12,8 +12,9 @@ import { LoggingModule } from '@shared/interceptor/logging/logging.module';
 import { ExceptionModule } from '@shared/exception/exception.module';
 import { TokenModule } from './token/token.module';
 import { UserModule } from './user/user.module';
-import { CollectionModule } from './collection/collection.module';
-
+import { DeviceModule } from './device/device.module';
+import { ItemModule } from './item/item.module';
+import { PaymentModule } from '@payment/payment.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -34,7 +35,9 @@ import { CollectionModule } from './collection/collection.module';
     ExceptionModule,
     UserModule,
     TokenModule,
-    CollectionModule,
+    DeviceModule,
+    ItemModule,
+    PaymentModule,
   ],
   controllers: [HealthCheckController],
   providers: [SwaggerProvider],

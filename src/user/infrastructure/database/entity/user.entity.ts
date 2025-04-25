@@ -1,17 +1,23 @@
-import { Column, Entity, JoinColumn, OneToMany, PrimaryColumn } from 'typeorm';
-import { UserDeviceEntity } from './user-device.entity';
+import { Column, Entity, JoinColumn, OneToMany, OneToOne } from 'typeorm';
+import { DeviceEntity } from '@device/infrastructure/database/entity/device.entity';
+import { BaseEntity } from '@shared/entity/base.entity';
+import { CartEntity } from '@payment/infrastructure/database/entity/cart.entity';
+import { OrderEntity } from '@payment/infrastructure/database/entity/order.entity';
 
 @Entity('users')
-export class UserEntity {
-  @PrimaryColumn()
-  id: string;
-
+export class UserEntity extends BaseEntity {
   @Column()
   phoneNumber: string;
 
-  @OneToMany(() => UserDeviceEntity, (userDevice) => userDevice.userId, {
+  @OneToMany(() => DeviceEntity, (device) => device.userId, {
     cascade: false,
   })
   @JoinColumn({ name: 'id', referencedColumnName: 'user_id' })
-  devices: UserDeviceEntity[];
+  devices: DeviceEntity[];
+
+  @OneToOne(() => CartEntity, (cart) => cart.user)
+  cart: CartEntity;
+
+  @OneToMany(() => OrderEntity, (order) => order.user)
+  orders: OrderEntity[];
 }

@@ -1,16 +1,16 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
-import { IUserRepository } from 'src/user/domain/repository/user.repository.interface';
+import { IUserRepository } from '@user/domain/repository/user.repository.interface';
 import { GetUserQuery } from './get-user.query';
-import { GetUserResultVO } from 'src/user/domain/vo/result/get-user.vo';
+import { UserVO } from '@shared/vo/user.vo';
 @Injectable()
 @QueryHandler(GetUserQuery)
-export class GetUserHandler implements IQueryHandler<GetUserQuery> {
+export class GetUserQueryHandler implements IQueryHandler<GetUserQuery> {
   constructor(
     @Inject('UserRepository') private userRepository: IUserRepository,
   ) {}
 
-  async execute(query: GetUserQuery): Promise<GetUserResultVO> {
+  async execute(query: GetUserQuery): Promise<UserVO> {
     return await this.userRepository.getUser(query.id);
   }
 }

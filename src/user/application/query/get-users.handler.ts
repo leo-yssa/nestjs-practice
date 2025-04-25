@@ -7,7 +7,7 @@ import { GetUsersResultVO } from '@user/domain/vo/result/get-users.vo';
 import { GetUsersInputVO } from '@user/domain/vo/input/get-users.vo';
 @Injectable()
 @QueryHandler(GetUsersQuery)
-export class GetUsersHandler implements IQueryHandler<GetUsersQuery> {
+export class GetUsersQueryHandler implements IQueryHandler<GetUsersQuery> {
   constructor(
     @Inject('UserRepository') private userRepository: IUserRepository,
   ) {}
