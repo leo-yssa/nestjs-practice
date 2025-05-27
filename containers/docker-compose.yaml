@@ -1,0 +1,134 @@
+services:
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    environment:
+      - TZ=Asia/Seoul
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./grafana/volume:/var/lib/grafana
+      - ./grafana/config/grafana.ini:/etc/grafana/grafana.ini:ro
+    restart: always
+  prometheus:
+    image: prom/prometheus:main
+    container_name: prometheus
+    volumes:
+      - ./prometheus/config:/etc/prometheus
+      - ./prometheus/volume:/prometheus
+    ports:
+      - 9090:9090
+    command:
+      - '--web.enable-lifecycle'
+      - '--config.file=/etc/prometheus/prometheus.yaml'
+      - '--web.enable-remote-write-receiver'
+      - '--enable-feature=exemplar-storage'
+      # - '--storage.tsdb.retention=7d'
+    restart: always
+    environment:
+      - TZ=Asia/Seoul
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "8m"
+        max-file: "10"
+  node:
+    image: prom/node-exporter
+    container_name: node-exporter
+    ports:
+      - "9100:9100"
+    restart: always
+  loki:
+    container_name: loki
+    image: grafana/loki:latest
+    volumes:
+      - ./loki/config:/etc/loki
+      - ./loki/volume:/loki
+    ports:
+      - 3100:3100
+      - 9096:9096
+    restart: always
+  promtail:
+    container_name: promtail
+    image: grafana/promtail:latest
+    ports:
+      - "9080:9080"
+    volumes:
+      - ./promtail/config:/etc/promtail/config
+      - ./promtail/volume:/promtail
+      - ./logs:/logs
+    command: 
+      [
+        "-config.expand-env=true",
+        "-config.file=/etc/promtail/config/config.yaml"
+      ]
+    restart: always
+  tempo:
+    container_name: tempo
+    image: grafana/tempo:latest
+    command:
+      [
+        "-config.file=/etc/tempo/config/tempo.yaml",
+        "--auth.enabled=false"
+      ]
+    volumes:
+      - ./tempo/config:/etc/tempo/config
+      - ./tempo/volume:/var
+    ports:
+      - "3200:3200" # tempo
+      - "9095:9095" # tempo grpc
+      - "4317:4317" # otlp grpc
+      - "4318:4318" # otlp http
+    restart: always
+  postgres:
+    container_name: postgres
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: userpw
+      POSTGRES_DB: sample
+    volumes:
+      - ./postgres/volume:/var
+    ports:
+      - "5432:5432"
+    restart: always
+  keycloak:
+    container_name: keycloak
+    image: quay.io/keycloak/keycloak:26.0.0
+    command: 
+      - start-dev
+    environment:
+      DB_VENDOR: postgres
+      DB_ADDR: postgres
+      DB_DATABASE: sample
+      DB_USER: user
+      DB_PASSWORD: userpw
+      KC_BOOTSTRAP_ADMIN_USERNAME: admin
+      KC_BOOTSTRAP_ADMIN_PASSWORD: adminpw
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+    restart: always
+  localstack:
+    image: localstack/localstack
+    container_name: localstack
+    ports:
+      - "4566:4566"  # Edge service (entrypoint for all services)
+      - "4576:4576"  # SQS specific port
+    environment:
+      - SERVICES=sqs
+      - AWS_ACCESS_KEY_ID=dummy
+      - AWS_SECRET_ACCESS_KEY=dummy
+      - DEBUG=1  # Enable debugging for more verbose output
+      - EDGE_PORT=4566
+    volumes:
+      - "./localstack:/localstack"  # Optional: persist data
+  redis:
+    image: redis:latest
+    container_name: redis
+    restart: always
+    ports:
+      - "6379:6379"
+    volumes:
+      - "./redis/volume:/data"

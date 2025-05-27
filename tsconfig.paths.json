@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "paths": {
+      "@shared/*": ["./src/shared/*"],
+      "@config/*": ["./src/config/*"],
+      "@auth/*": ["./src/module/auth/*"],
+      "@batch/*": ["./src/module/batch/*"],
+      "@common/*": ["./src/module/common/*"],
+      "@product/*": ["./src/module/product/*"],
+      "@user/*": ["./src/module/user/*"],
+      "@inventory/*": ["./src/module/inventory/*"],
+      "@seats-io/*": ["./src/module/seats-io/*"],
+      "@portone/*": ["./src/module/portone/*"],
+      "@health-check/*": ["./src/module/health-check/*"],
+      "@sms/*": ["./src/module/sms/*"]
+    }
+  }
+}
